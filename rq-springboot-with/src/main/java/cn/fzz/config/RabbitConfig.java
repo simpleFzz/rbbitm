@@ -186,7 +186,7 @@ public class RabbitConfig {
     //===============以上是验证Fanout Exchange的交换器==========
 
     //===============消费者确认==========
-    /*@Bean
+    @Bean
     public SimpleMessageListenerContainer messageContainer() {
         SimpleMessageListenerContainer container
                 = new SimpleMessageListenerContainer(connectionFactory());
@@ -197,7 +197,7 @@ public class RabbitConfig {
         //TODO 消费确认方法
         container.setMessageListener(userReceiver);
         return container;
-    }*/
+    }
 
     @Bean
     public SimpleMessageListenerContainer qosMessageContainer(){
