@@ -57,6 +57,6 @@ public class RabbitTest {
 
     @GetMapping("/delayTest")
     public void delayTest(){
-        delaySender.send("delay");
+        delaySender.sendDelay("delay");
     }
 }

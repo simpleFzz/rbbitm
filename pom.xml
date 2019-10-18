@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>native</module>
         <module>rq-springboot-with</module>
     </modules>
     <!-- RabbitMQ原生客户端-->

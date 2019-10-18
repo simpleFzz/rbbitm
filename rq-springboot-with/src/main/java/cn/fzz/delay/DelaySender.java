@@ -2,6 +2,7 @@ package cn.fzz.delay;
 
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
@@ -9,7 +10,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
+
+import cn.fzz.RmConst;
 
 @Component
 public class DelaySender {
@@ -33,5 +37,13 @@ public class DelaySender {
                 return message;
             }
         });
+    }
+
+    public  void sendDelay(String msg){
+        String sendMsg = msg +"---"+ System.currentTimeMillis();;
+        CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
+        System.out.println("Sender : " + sendMsg+"---correlationDataId:"+correlationData.getId());
+        System.out.println("SenderDl time:"+ LocalDateTime.now().toString());
+        this.rabbitTemplate.convertAndSend("DL_QUEUE", (Object) sendMsg, correlationData);
     }
 }

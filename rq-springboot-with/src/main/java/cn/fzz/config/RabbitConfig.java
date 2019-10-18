@@ -185,6 +185,55 @@ public class RabbitConfig {
 
     //===============以上是验证Fanout Exchange的交换器==========
 
+
+    //===============以下是验证DLE Exchange==========
+    @Bean("deadLetterExchange")
+    public Exchange deadLetterExchange() {
+        return ExchangeBuilder.directExchange("DL_EXCHANGE").durable(true).build();
+    }
+    @Bean("deadLetterQueue")
+    public Queue deadLetterQueue() {
+        Map<String, Object> args = new HashMap<>(2);
+        args.put(RmConst.DEAD_LETTER_EXCHANGE_KEY, "DL_EXCHANGE");
+        args.put(RmConst.DEAD_LETTER_ROUTING_KEY, "KEY_R");
+        args.put(RmConst.X_MESSAGE_TTL, 20*1000);
+        return QueueBuilder.durable("DL_QUEUE").withArguments(args).build();
+    }
+
+    /**
+     * 定义死信队列转发队列.
+     *
+     * @return the queue
+     */
+    @Bean("redirectQueue")
+    public Queue redirectQueue() {
+        return QueueBuilder.durable("REDIRECT_QUEUE").build();
+    }
+
+    /**
+     * 死信路由通过 DL_KEY 绑定键绑定到死信队列上.
+     *
+     * @return the binding
+     */
+    @Bean
+    public Binding deadLetterBinding() {
+        return new Binding("DL_QUEUE", Binding.DestinationType.QUEUE, "DL_EXCHANGE", "DL_KEY", null);
+
+    }
+
+    /**
+     * 死信路由通过 KEY_R 绑定键绑定到死信队列上.
+     *
+     * @return the binding
+     */
+    @Bean
+    public Binding redirectBinding() {
+        return new Binding("REDIRECT_QUEUE", Binding.DestinationType.QUEUE, "DL_EXCHANGE", "KEY_R", null);
+    }
+
+    //===============以下是验证DLE Exchange的交换器==========
+
+
     //===============消费者确认==========
     @Bean
     public SimpleMessageListenerContainer messageContainer() {

@@ -7,10 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="demo" />
-        <module name="native" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="native" target="1.5" />
       <module name="rq-depot" target="1.8" />
       <module name="rq-order" target="1.5" />
       <module name="rq-spring-with" target="1.5" />
